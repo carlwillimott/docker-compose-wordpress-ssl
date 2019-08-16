@@ -1,0 +1,56 @@
+version: '3.3'
+
+services:
+
+  letsencrypt:
+    image: linuxserver/letsencrypt
+    container_name: letsencrypt
+    depends_on:
+      - wordpress
+    volumes:
+      - ./config:/config
+      - ./default:/config/nginx/site-confs/default
+    environment:
+      - EMAIL=email@example.com
+      - URL=www.example.com
+      - VALIDATION=http
+      - TZ=Europe/London
+      - PUID=500
+      - PGID=500
+    ports:
+      - "443:443"
+      - "80:80"
+
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress
+    hostname: wordpress
+    depends_on:
+      - db
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - /var/www/html/example/wp-content:/var/www/html/wp-content
+      - /var/www/html/example/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wp_db_user
+      WORDPRESS_DB_PASSWORD: wp_db_pass
+      WORDPRESS_DB_NAME: wp_db_name
+      WORDPRESS_CONFIG_EXTRA: |
+        define( 'WP_MEMORY_LIMIT', '96M' );
+
+  db:
+    image: mysql:5.7
+    container_name: db
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql_root_pass
+      MYSQL_DATABASE: wp_db_name
+      MYSQL_USER: wp_db_user
+      MYSQL_PASSWORD: wp_db_pass
