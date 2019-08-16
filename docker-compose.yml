@@ -8,7 +8,6 @@ services:
     depends_on:
       - wordpress
     volumes:
-      - ./config:/config
       - ./default:/config/nginx/site-confs/default
     environment:
       - EMAIL=email@example.com
