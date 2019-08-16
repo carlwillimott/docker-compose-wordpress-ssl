@@ -51,6 +51,6 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: mysql_root_pass
-      MYSQL_DATABASE: mysql_db
-      MYSQL_USER: mysql_user
-      MYSQL_PASSWORD: mysql_pass
+      MYSQL_DATABASE: wp_db_name
+      MYSQL_USER: wp_db_user
+      MYSQL_PASSWORD: wp_db_pass
