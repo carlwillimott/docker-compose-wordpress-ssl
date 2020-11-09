@@ -2,9 +2,9 @@ version: '3.3'
 
 services:
 
-  letsencrypt:
-    image: linuxserver/letsencrypt
-    container_name: letsencrypt
+  swag:
+    image: linuxserver/swag
+    container_name: swag
     depends_on:
       - wordpress
     volumes:
